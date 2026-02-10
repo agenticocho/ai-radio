@@ -81,7 +81,7 @@ end
 next_song = ref([])
 def check_next(r) =
   ignore(request.resolve(r))
-  request.read_metadata(r)
+  #request.read_metadata(r)
   next_song := request.metadata(r)
   true
 end
@@ -106,7 +106,7 @@ def process_dj_metadata(m) =
   end
 end
 
-radio = source.on_metadata(radio, process_dj_metadata)
+radio.on_metadata(synchronous=true, process_dj_metadata)
 
 radio = fallback(track_sensitive=true, [append_queue, radio])
 
@@ -117,16 +117,16 @@ def update_current_song(m) =
   current_title := m["title"]
   current_artist := m["artist"]
 end
-radio.on_metadata(update_current_song)
+radio.on_metadata(synchronous=true, update_current_song)
 
-def position() =
+def get_position() =
   source.elapsed(radio) / source.duration(radio)
 end
 
 def remaining() =
-  time = source.remaining(radio)
-  seconds = string.of_int(digits=2, int(time mod 60.))
-  minutes = string.of_int(digits=2, int(time / 60.))
+  t = source.remaining(radio)
+  seconds = string.of_int(digits=2, int(t mod 60.))
+  minutes = string.of_int(digits=2, int(t / 60.))
   "#{minutes}:#{seconds}"
 end
 
@@ -239,7 +239,7 @@ background =
     x=0 @ px,
     y=5285 @ px,
     height=50 @ px,
-    width={position() @ vw},
+    width={get_position() @ vw},
     background
   )
 
