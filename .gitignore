@@ -2,3 +2,9 @@ audio/
 background/
 hls/
 config.liq
+__pycache__/
+*.orig
+main_*.liq
+main_patched*.liq
+main_audio_only.liq
+main_v*.liq
