@@ -26,7 +26,7 @@ def load_audio(path, sr=44100):
     with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp:
         tmp_wav = tmp.name
     subprocess.run(
-        ['ffmpeg', '-y', '-i', path,
+        ['/opt/homebrew/bin/ffmpeg', '-y', '-i', path,
          '-ar', str(sr), '-ac', '2', '-f', 'wav', tmp_wav],
         check=True, capture_output=True
     )
@@ -68,7 +68,7 @@ def audio_to_mp3(y, sr, out_path):
         tmp_wav = tmp.name
     sf.write(tmp_wav, y.T, sr, subtype='PCM_16')
     subprocess.run(
-        ['ffmpeg', '-y', '-i', tmp_wav, '-q:a', '2', out_path],
+        ['/opt/homebrew/bin/ffmpeg', '-y', '-i', tmp_wav, '-q:a', '2', out_path],
         check=True, capture_output=True
     )
     os.unlink(tmp_wav)
